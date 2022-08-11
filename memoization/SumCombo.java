@@ -40,9 +40,44 @@ public class SumCombo {
         } // end of for loop
 
         return false;
-    } // end of canSum(int, int[], int[][])
+    } // end of canSum(int, int[], Container_bool[][])
 
-    // int[] howSum(int target, int[] arr) {}
+    static void howSum(int target, int[] arr) { // wrapper function for howSum
+        Container_bool[][] memoMatrix = new Container_bool[target + 1][target + 1];
+
+        for (int i = 0; i <= target; i++)
+            for (int j = 0; j <= target; j++)
+                memoMatrix[i][j] = new Container_bool();
+
+        ArrayList<Integer> list = new ArrayList<Integer>();
+
+        howSum(target, arr, memoMatrix, list);
+    } // end of howSum(int, int[])
+
+    static void displayList(ArrayList<Integer> list) {
+        String combo = "[ ";
+
+        for (int element : list)
+            combo += element + " + ";
+
+        combo = combo.substring(0, combo.length() - 2);
+        combo += "]";
+
+        System.out.println(combo);
+    } // displayList(ArrayList<Integer>)
+
+    static void howSum(int target, int[] arr, Container_bool[][] memoMatrix, ArrayList<Integer> list) {
+        if (target == 0)
+            displayList(list);
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] <= target) {
+                list.add(arr[i]);
+                howSum(target - arr[i], arr, memoMatrix, list);
+                list.remove(list.size() - 1);
+            }
+        } // end of for loop
+    } // end of howSum(int, int[], Container_bool[][], ArrayList<Integer>)
 
     // int[] bestSum(int target, int[] arr) {}
 
@@ -78,6 +113,12 @@ public class SumCombo {
 
         boolean isPossible = canSum(target, arr);
 
-        System.out.println("\n" + isPossible);
+        if (isPossible)
+            System.out.println("\nIs achievable\n");
+        else
+            System.out.println("\nIs NOT achievable\n");
+
+        System.out.println("All possible combinations are :-");
+        howSum(target, arr);
     } // end of main()
 } // end of class SumCombo
