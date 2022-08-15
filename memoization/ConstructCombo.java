@@ -31,14 +31,15 @@ class ConstructCombo {
         for (int i = 0; i < subsetArr.length; i++) {
             if (isPrefix(subsetArr[i], target)) {
                 suffix = getSuffix(subsetArr[i], target);
-
                 val = canConstruct(suffix, subsetArr, memo);
-                memo.put(target, val);
-
-                if (val) return true;
+                if (val) {
+                    memo.put(target, true);
+                    return true;
+                }
             }
         } // end of for loop
 
+        memo.put(target, false);
         return false;
     }
 
