@@ -48,6 +48,35 @@ class ConstructCombo {
         return canConstruct(target, subsetArr, memo);
     }
 
+    static int countConstruct(String target, String[] subsetArr, HashMap<String, Integer> memo) {
+        if (target == "") return 1;
+
+        if (memo.get(target) != null)
+            return memo.get(target);
+
+        String suffix = "";
+        int count = 0;
+        int countChildren = 0;
+
+        for (int i = 0; i < subsetArr.length; i++) {
+            if (isPrefix(subsetArr[i], target)) {
+                suffix = getSuffix(subsetArr[i], target);
+
+                countChildren = countConstruct(suffix, subsetArr, memo);
+                count += countChildren;
+            }
+        } // end of for loop
+
+        memo.put(target, count);
+        return count;
+    }
+
+    // wrapper function for countConstruct
+    static int countConstruct(String target, String[] subsetArr) {
+        HashMap<String, Integer> memo = new HashMap<String, Integer>();
+        return countConstruct(target, subsetArr, memo);
+    }
+
     public static void main(String args[]) {
         Scanner sc1 = new Scanner(System.in);
         Scanner sc2 = new Scanner(System.in);
@@ -70,5 +99,7 @@ class ConstructCombo {
             System.out.println("Construction Possible.");
         else
             System.out.println("Construction Not Possible.");
+
+        System.out.println("Number of ways to construct: " + countConstruct(target, subsetArr));
     } // end of main(String[])
 } // end of class ConstructCombo
